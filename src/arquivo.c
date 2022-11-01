@@ -47,7 +47,7 @@ void printMatrix(int **matrix, int rows, int cols)
     {
         for (int j = 0; j < cols; j++)
         {
-            printf("[%02d] ", matrix[i][j]);
+            printf("%02d  ", matrix[i][j]);
         }
 
         printf("\n");
@@ -60,23 +60,33 @@ bool movimentar (int x, int y, int rows, int cols, int** matrix, int** flag, int
     else
     {
         bool found = false;
+    
         if(matrix[x + 1][y] == fibSequence(n + 1) && flag[x + 1][y] == 0)
-        {
+        {   
+            printf("down\n");
+            printf ("x: %d, y: %d, n: %d\n", x, y, n);
             flag[x + 1][y] = n + 1;
-            found = movimentar(x + 1, y, rows, cols, matrix, flag, n);
+
+            found = movimentar(x + 1, y, rows, cols, matrix, flag, n + 1);
         }
         if(y > 0 && matrix[x][y - 1] == fibSequence(n + 1) && flag[x][y - 1] == 0 && !found)
-        {
+        {   
+            printf("left\n");
+            printf ("x: %d, y: %d, n: %d\n", x, y, n);
             flag[x][y - 1] = n + 1;
-            found = movimentar(x, y - 1, rows, cols, matrix, flag, n);
+            found = movimentar(x, y - 1, rows, cols, matrix, flag, n + 1);
         }
         if(y < cols - 1 && matrix[x][y + 1] == fibSequence(n + 1) && flag[x][y + 1] == 0 && !found)
         {
+            printf("right\n");
+            printf ("x: %d, y: %d, n: %d\n", x, y, n);
             flag[x][y + 1] = n + 1;
-            found = movimentar(x, y + 1, rows, cols, matrix, flag, n);
+            found = movimentar(x, y + 1, rows, cols, matrix, flag, n + 1);
         }
         if(x > 0 && matrix[x - 1][y] == fibSequence(n + 1) && flag[x - 1][y] == 0 && !found)
-        {
+        {   
+            printf("up\n");
+            printf ("x: %d, y: %d, n: %d\n", x, y, n);
             flag[x - 1][y] = n + 1;
             found = movimentar(x - 1, y, rows, cols, matrix, flag, n + 1);
         }
@@ -123,6 +133,18 @@ int main()
             fscanf(file, "%d ", &matrix[i][j]);
         }
     }
+    //print the matrix
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            printf("[%02d] ", matrix[i][j]);
+        }
+
+        printf("\n");
+    }
+
 
     //maybe thats a dumb way to check if this part of the crop has already been visited, but i couldnt come up with anything else, i guess that if we made a data structure for the crops, this would be better
     int **flagMatrix = initializeMatrix(rows, cols);
@@ -156,17 +178,26 @@ int main()
     bool found = false;
     for(int i = 0; i < cols; i++)
     {
+        printf("Olhei o elemento %d \n", matrix[0][i]);
         found = false;
         if(matrix[0][i] == 1)
-        {
+        {   
+            printf("Encontrei um elemento 1 na posicao 0, %d \n", i);
             found = movimentar(0, i, rows, cols, matrix, flagMatrix, 1);
         }
+        if(found) break;
     }
     if(!found) printf("Impossible to find optmal path\n");
     else
     {
         printf("achou!!!!\n");
     }
+
+    //matriz de flags
+
+    printf("Printing out the flag matrix\n");
+
+    printMatrix(flagMatrix, rows, cols);
 
     return 0;
 }
