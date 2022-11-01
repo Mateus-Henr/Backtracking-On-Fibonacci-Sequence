@@ -1,0 +1,11 @@
+#ifndef BACKTRACKING_ON_FIBONACCI_SEQUENCE_F_H
+#define BACKTRACKING_ON_FIBONACCI_SEQUENCE_F_H
+#endif
+
+#include <stdbool.h>
+
+int **initializeMatrix(int rows, int cols);
+
+bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **flag, int n);
+
+void printMatrix(int **matrix, int rows, int cols);
