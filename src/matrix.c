@@ -45,33 +45,24 @@ bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **fla
         if (matrix[currLine + 1][currCol] == realFibonacciSequence(n + 1) &&
             flag[currLine + 1][currCol] == 0)
         {
-            printf("down\n");
-            printf("currLine: %d, currCol: %d, n: %d\n", currLine, currCol, n);
             flag[currLine + 1][currCol] = n + 1;
-
             found = move(currLine + 1, currCol, rows, cols, matrix, flag, n + 1);
         }
         if (currCol > 0 && matrix[currLine][currCol - 1] == realFibonacciSequence(n + 1) &&
             flag[currLine][currCol - 1] == 0 && !found)
         {
-            printf("left\n");
-            printf("currLine: %d, currCol: %d, n: %d\n", currLine, currCol, n);
             flag[currLine][currCol - 1] = n + 1;
             found = move(currLine, currCol - 1, rows, cols, matrix, flag, n + 1);
         }
         if (currCol < cols - 1 && matrix[currLine][currCol + 1] == realFibonacciSequence(n + 1) &&
             flag[currLine][currCol + 1] == 0 && !found)
         {
-            printf("right\n");
-            printf("currLine: %d, currCol: %d, n: %d\n", currLine, currCol, n);
             flag[currLine][currCol + 1] = n + 1;
             found = move(currLine, currCol + 1, rows, cols, matrix, flag, n + 1);
         }
         if (currLine > 0 && matrix[currLine - 1][currCol] == realFibonacciSequence(n + 1) &&
             flag[currLine - 1][currCol] == 0 && !found)
         {
-            printf("up\n");
-            printf("currLine: %d, currCol: %d, n: %d\n", currLine, currCol, n);
             flag[currLine - 1][currCol] = n + 1;
             found = move(currLine - 1, currCol, rows, cols, matrix, flag, n + 1);
         }
@@ -94,15 +85,38 @@ bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **fla
  *  @param     rows       number of rows in the matrix.
  *  @param     cols       number of columns in the matrix.
  */
+void printFlagMatrix(int **matrix, int rows, int cols)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {   
+            if (matrix[i][j] == 0)
+            {   
+                printf("\033[1;31m");
+                printf("%02d  ", matrix[i][j]);
+                printf("\033[0m");
+            }
+            else
+            {
+                printf("\033[1;32m");
+                printf("%02d  ", matrix[i][j]);
+                printf("\033[0m");
+            }
+        }
+
+        printf("\n");
+    }
+}
+
 void printMatrix(int **matrix, int rows, int cols)
 {
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
-        {
+        {   
             printf("%02d  ", matrix[i][j]);
         }
-
         printf("\n");
     }
 }

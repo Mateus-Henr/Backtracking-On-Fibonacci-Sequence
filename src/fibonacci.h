@@ -4,3 +4,4 @@
 
 
 int realFibonacciSequence(int n);
+int getNthTermFromFibonacci(int n);
