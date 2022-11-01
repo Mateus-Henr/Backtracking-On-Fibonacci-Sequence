@@ -54,50 +54,44 @@ void printMatrix(int **matrix, int rows, int cols)
     }
 }
 
-void movimentar (int x, int y, int rows, int cols, int** matrix, int** flag, int n)
+bool movimentar (int x, int y, int rows, int cols, int** matrix, int** flag, int n)
 {
-    bool possibleMove = false;
-    if(x > 0)
+    if(x == rows - 1) return true;
+    else
     {
-        if(matrix[x - 1][y] == fibSequence(n + 1) && flag[x - 1][y] == 0)
-        {
-            possibleMove = true;
-            flag[x - 1][y] = 1;
-            movimentar(x - 1, y, rows, cols, matrix, flag, n + 1);
-        }
-    }
-    if(x < rows - 1)
-    {
+        bool found = false;
         if(matrix[x + 1][y] == fibSequence(n + 1) && flag[x + 1][y] == 0)
         {
-            possibleMove = true;
-            flag[x + 1][y] = 1;
-            movimentar(x + 1, y, rows, cols, matrix, n);
+            flag[x + 1][y] = n + 1;
+            found = movimentar(x + 1, y, rows, cols, matrix, flag, n);
         }
-    }
-    if(y > 0)
-    {
-        if(matrix[x][y - 1] == fibSequence(n + 1) && flag[x][y - 1] == 0)
+        if(y > 0 && matrix[x][y - 1] == fibSequence(n + 1) && flag[x][y - 1] == 0 && !found)
         {
-            possibleMove = true;
-            flag[x][y - 1] = 1;
-            movimentar(x, y - 1, rows, cols, matrix, n);
+            flag[x][y - 1] = n + 1;
+            found = movimentar(x, y - 1, rows, cols, matrix, flag, n);
         }
-    }
-    if(y < cols - 1)
-    {
-        if(matrix[x][y + 1] == fibSequence(n + 1) && flag[x][y + 1] == 0)
+        if(y < cols - 1 && matrix[x][y + 1] == fibSequence(n + 1) && flag[x][y + 1] == 0 && !found)
         {
-            possibleMove = true;
-            flag[x][y + 1] = 1;
-            movimentar(x, y + 1, rows, cols, matrix, n);
+            flag[x][y + 1] = n + 1;
+            found = movimentar(x, y + 1, rows, cols, matrix, flag, n);
         }
+        if(x > 0 && matrix[x - 1][y] == fibSequence(n + 1) && flag[x - 1][y] == 0 && !found)
+        {
+            flag[x - 1][y] = n + 1;
+            found = movimentar(x - 1, y, rows, cols, matrix, flag, n + 1);
+        }
+
+        if(!found)
+        {
+            flag[x][y] = 0;
+            return false;
+        }
+        else return true;
     }
 }
 
 int main()
 {
-    for (int i = 1; i < 22; i++) printf("%d\n", fibSequence(i));
 
     char filename[CHAR_MAX];
 
@@ -131,7 +125,7 @@ int main()
     }
 
     //maybe thats a dumb way to check if this part of the crop has already been visited, but i couldnt come up with anything else, i guess that if we made a data structure for the crops, this would be better
-    bool **flagMatrix = initializeMatrix(rows, cols);
+    int **flagMatrix = initializeMatrix(rows, cols);
 
     for (int i = 0; i < rows; i++)
     {
@@ -140,6 +134,8 @@ int main()
             flagMatrix[i][j] = 0;
         }
     }
+
+    //int *path = ;
 
     /*int number = 0;
 
@@ -158,32 +154,19 @@ int main()
 
     // finds somewhere to start the harvest in the borders of the crops
     bool found = false;
-    for(int i = 0; i < rows; i++)
+    for(int i = 0; i < cols; i++)
     {
-        if(i == 0 || i == rows - 1)
+        found = false;
+        if(matrix[0][i] == 1)
         {
-            for(int j = 0; j < cols; j++)
-            {
-                if(matrix[i][j] == 1)
-                {
-                    movimentar(i, j, rows, cols, matrix, flagMatrix, 1);
-                    found = true;
-                }
-            }
-        }
-        else
-        {
-            for(int j = 0; j < cols; j += cols - 1)
-            {
-                if(matrix[i][j] == 1)
-                {
-                    movimentar(i, j, rows, cols, matrix, flagMatrix, 1);
-                    found = true;
-                }
-            }
+            found = movimentar(0, i, rows, cols, matrix, flagMatrix, 1);
         }
     }
     if(!found) printf("Impossible to find optmal path\n");
+    else
+    {
+        printf("achou!!!!\n");
+    }
 
     return 0;
 }
