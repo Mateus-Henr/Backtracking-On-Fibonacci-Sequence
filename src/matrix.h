@@ -11,3 +11,5 @@ bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **fla
 void printFlagMatrix(int **matrix, int rows, int cols);
 
 void printMatrix(int **matrix, int rows, int cols);
+
+void printPath(int **flagMatrix, int rows, int cols);

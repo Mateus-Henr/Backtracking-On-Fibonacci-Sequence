@@ -79,7 +79,7 @@ bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **fla
 
 
 /*
- *  Prints matrix out.
+ *  Prints flag matrix out.
  *
  *  @param     matrix     pointer to matrix.
  *  @param     rows       number of rows in the matrix.
@@ -109,6 +109,13 @@ void printFlagMatrix(int **matrix, int rows, int cols)
     }
 }
 
+/*
+ *  Prints matrix out.
+ *   
+ *   @param     matrix     pointer to matrix.
+ *   @param     rows       number of rows in the matrix.
+ *   @param     cols       number of columns in the matrix.
+*/
 void printMatrix(int **matrix, int rows, int cols)
 {
     for (int i = 0; i < rows; i++)
@@ -117,6 +124,58 @@ void printMatrix(int **matrix, int rows, int cols)
         {   
             printf("%02d  ", matrix[i][j]);
         }
+
         printf("\n");
     }
 }
+
+/*
+ *  Prints path.
+ *
+ *  @param     flagMatrix     pointer to flag matrix.
+ *  @param     rows           number of rows in the matrix.
+ *  @param     cols           number of columns in the matrix.
+ */
+void printPath(int **flagMatrix, int rows, int cols)
+{
+    int path = 0, x = 0, y = 0;
+    for (int i = 0; i < cols; i++)
+    {
+        y = i;
+        if (flagMatrix[x][i] == 1)
+        {
+            printf("[%d %d] \n", x+1, y+1);
+            path++;
+            break;
+        }
+    }
+                
+    do{
+        if (x < rows - 1 && flagMatrix[x + 1][y] == path + 1)
+        {
+            printf("[%d %d]\n", x + 1 + 1, y + 1);
+            x++;
+            path++;
+        }
+        else if (y > 0 && flagMatrix[x][y - 1] == path + 1)
+        {
+            printf("[%d %d]\n", x + 1, y);
+            y--;
+            path++;
+        }
+        else if (y < cols - 1 && flagMatrix[x][y + 1] == path + 1)
+        {
+            printf("[%d %d]\n", x + 1, y + 1 + 1);
+            y++;
+            path++;
+        }
+        else if (x > 0 && flagMatrix[x - 1][y] == path + 1)
+        {
+            printf("[%d %d]\n", x, y + 1);
+            x--;
+            path++;
+        }
+    }while (x != rows - 1); 
+}
+
+

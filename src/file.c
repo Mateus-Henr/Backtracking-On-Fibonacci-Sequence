@@ -3,10 +3,14 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <time.h>
+#include <string.h>
 
 #include "matrix.h"
 #include "fibonacci.h"
 #include "file.h"
+
+
+
 
 
 /*
@@ -60,63 +64,62 @@ int **readFileIntoMatrix(char *filename, int *rows, int *cols)
  * Generate a random File for testing.
  * Numbers of rows, columns and the aij element of the matrix is ​​generated randomly.
  */
+
 int generateFile()
 {
-    int probability = 0;
+    bool found = false;
     srand(time(NULL));
 
-    int rows = rand() % 15 + 1;
-    int cols = rand() % 15 + 1;
+    int rows = rand() % 8 + 1;
+    int cols = rand() % 25 + 1;
 
     printf("\nNumber of rows: %d\n", rows);
     printf("Number of columns: %d\n", cols);
 
     char filename[CHAR_MAX];
-
+    char folder[CHAR_MAX] = "tests/";
+    
     sprintf(filename, "test-%d-%d.txt", rows, cols);
 
-    printf("Generated file %s\n ", filename);
-    
+    strcat(folder, filename);
 
-    FILE *file = fopen(filename, "w");
+    FILE *file = fopen(folder, "w");
 
     fprintf(file, "%d %d \n", rows, cols);
 
     for(int i = 0; i < rows; i++){
         for(int j = 0; j < cols; j++){
-            probability = rand() % 100 + 1;
+            int probability = rand() % 100 + 1;
+
             if(probability <= 30){
-                fprintf(file, "%d ", getNthTermFromFibonacci(1));
+                fprintf(file, "%d ", getNthTermFromFibonacci(rand() % 2 + 1));
             }
+
             else if (probability <= 50){
                 fprintf(file, "%d ", getNthTermFromFibonacci(rand() % 5 + 1));
             }
+
             else if (probability <= 70){
                 fprintf(file, "%d ", getNthTermFromFibonacci( rand () % 6 + 1));
             }
+
             else{
                 fprintf(file, "%d ", getNthTermFromFibonacci(rand () % 8 + 1));
             }
+
         }
         fprintf(file, "\n");
     }
     fclose(file);
 
-    int **matrix = readFileIntoMatrix(filename, &rows, &cols);
+    int **matrix = readFileIntoMatrix( folder, &rows, &cols);
 
-    if (!matrix)
-    {
-        return -1;
-    }
+    if (!matrix) return -1;
+    
 
     int **flagMatrix = initializeMatrix(rows, cols);
 
-    if (!flagMatrix)
-    {
-        return -1;
-    }
-
-    bool found = false;
+    if (!flagMatrix) return -1;
 
     for (int i = 0; i < cols; i++)
     {
@@ -133,52 +136,13 @@ int generateFile()
             
     printf("\nMatrix:\n");
     printMatrix(matrix, rows, cols);
-    printf("\nPress any key to continue...");
-    getchar();
+    printf("\nPress ENTER to continue..."); getchar();
             
     if (found)
         {
         printf("\n\nPath has been found!\n");
         printf("Path: \n");
-
-        int path = 0, x = 0, y = 0;
-        for (int i = 0; i < cols; i++)
-        {
-            y = i;
-            if (flagMatrix[x][i] != 0)
-                {
-                    printf("[%d %d] \n", x+1, y+1);
-                    path++;
-                    break;
-                }
-        }
-                
-        do{
-            if (x < rows - 1 && flagMatrix[x + 1][y] == path + 1)
-            {
-                printf("[%d %d]\n", x + 1 + 1, y + 1);
-                x++;
-                path++;
-            }
-            else if (y > 0 && flagMatrix[x][y - 1] == path + 1)
-            {
-                printf("[%d %d]\n", x + 1, y);
-                y--;
-                path++;
-            }
-            else if (y < cols - 1 && flagMatrix[x][y + 1] == path + 1)
-            {
-                printf("[%d %d]\n", x + 1, y + 1 + 1);
-                y++;
-                path++;
-            }
-            else if (x > 0 && flagMatrix[x - 1][y] == path + 1)
-            {
-                printf("[%d %d]\n", x, y + 1);
-                x--;
-                path++;
-            }
-        }while (x != rows - 1);    
+        printPath(flagMatrix, rows, cols);   
         printf("\n\nFlag matrix:\n");
         printFlagMatrix(flagMatrix, rows, cols);
     }
@@ -186,10 +150,12 @@ int generateFile()
     {
         printf("\n\nImpossible to find a path!\n");
     }
+    return 0;
 }
+
 /*
-* Free buffer
-*/
+ * Clears the input buffer
+ */
 
 void flush_in() { 
     int ch;

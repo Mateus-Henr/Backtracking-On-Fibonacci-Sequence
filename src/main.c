@@ -7,6 +7,9 @@
 #include "matrix.h"
 #include "fibonacci.h"
 
+
+
+
 int main()
 {
     
@@ -31,12 +34,17 @@ int main()
                 printf("Type the filename: ");
                 scanf("%s", filename);
                 flush_in();
-
+            
                 int **matrix = readFileIntoMatrix(filename, &rows, &cols);
+
+
 
                  if (!matrix)
                 {
-                    return -1;
+                    printf("Press ENTER to continue.\n");
+                    getchar(); system("clear");
+                    break;
+                    
                 }
 
                 int **flagMatrix = initializeMatrix(rows, cols);
@@ -65,44 +73,7 @@ int main()
             {
                 printf("\n\nPath has been found!\n");
                 printf("Path: \n");
-                int path = 0, x = 0, y = 0;
-                for (int i = 0; i < cols; i++)
-                    {
-                        y = i;
-                        if (flagMatrix[x][i] != 0)
-                        {
-                            printf("[%d %d] \n", x+1, y+1);
-                            path++;
-                            break;
-                        }
-                    }
-                
-                do{
-                    if (x < rows - 1 && flagMatrix[x + 1][y] == path + 1)
-                    {
-                        printf("[%d %d]\n", x + 1 + 1, y + 1);
-                        x++;
-                        path++;
-                    }
-                    else if (y > 0 && flagMatrix[x][y - 1] == path + 1)
-                    {
-                        printf("[%d %d]\n", x + 1, y);
-                        y--;
-                        path++;
-                    }
-                    else if (y < cols - 1 && flagMatrix[x][y + 1] == path + 1)
-                    {
-                        printf("[%d %d]\n", x + 1, y + 1 + 1);
-                        y++;
-                        path++;
-                    }
-                    else if (x > 0 && flagMatrix[x - 1][y] == path + 1)
-                    {
-                        printf("[%d %d]\n", x, y + 1);
-                        x--;
-                        path++;
-                    }
-                }while (x != rows - 1);    
+                printPath(flagMatrix, rows, cols);  
                 printf("\n\nFlag matrix:\n\n");
                 printFlagMatrix(flagMatrix, rows, cols);
             }
@@ -122,10 +93,10 @@ int main()
             system("clear");
             break;
         case 3:
-            printf("Exiting...\n");
-            break;
+            printf("Exiting... \n");
+            printf("Bye!\n");
+            exit(0);
         default:
-            printf("Invalid option.\n\n\n");
             system("clear");
             break;
         }
