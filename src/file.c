@@ -79,7 +79,9 @@ int generateFile()
     char filename[CHAR_MAX];
     char folder[CHAR_MAX] = "tests/";
     
-    sprintf(filename, "test-%d-%d.txt", rows, cols);
+    sprintf(filename, "random-%d-%d.txt", rows, cols);
+
+    printf("Filename: %s\n", filename);
 
     strcat(folder, filename);
 
@@ -148,7 +150,7 @@ int generateFile()
     }
     else
     {
-        printf("\n\nImpossible to find a path!\n");
+        printf("\n\nImpossible to find a path!\n\n");
     }
     return 0;
 }

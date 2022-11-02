@@ -81,7 +81,7 @@ int main()
             {
                 printf("\n\nImpossible to find a path!");
             }
-            printf("\nPress ENTER to continue...");
+            printf("\n\nPress ENTER to continue...");
             getchar();
             system("clear");
 
