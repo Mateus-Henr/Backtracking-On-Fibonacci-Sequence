@@ -101,7 +101,7 @@ int main()
                 clearConsole();
                 break;
             case 2:
-                printf("");
+                printf(" ");
 
                 char *filepath = generateRandomFile(&rows, &cols);
 
@@ -130,6 +130,8 @@ int main()
                     clearConsole();
                     break;
                 }
+
+                found = false;
 
                 for (int i = 0; i < cols; i++)
                 {
