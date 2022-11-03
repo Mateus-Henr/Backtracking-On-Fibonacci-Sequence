@@ -91,12 +91,13 @@ bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **fla
 
 
 /*
- *  Discovers if there's a path, if found prints it out.
+ *  Discovers if there's a starting from the top line.
  *
  *  @param      matrix          pointer to a matrix.
  *  @param      flagMatrix      pointer to a flagMatrix matrix.
  *  @param      rows            total number of rows in the matrix.
  *  @param      cols            total number of columns in the matrix.
+ *  @return                     whether a path could be found or not.
  */
 bool isThereAPath(int **matrix, int **flagMatrix, int rows, int cols)
 {
