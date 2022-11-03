@@ -33,56 +33,86 @@ int **initializeMatrix(int rows, int cols)
 
 
 /*
- *  Moves through matrix looking for a path that follows the real Fibonacci sequence.
+ *  Moves through matrix from a certain line and column, looking for a path that follows the real Fibonacci sequence.
  *
- *  @param      currLine      current line in the matrix.
- *  @param      currCol       current column in the matrix.
- *  @param      rows          total number of rows in the matrix.
- *  @param      cols          total number of columns in the matrix.
- *  @param      matrix        pointer to a matrix.
- *  @param      flag          pointer to a flag matrix.
- *  @param      matrix        term position in the real Fibonacci sequence.
+ *  @param      currLine        current line in the matrix.
+ *  @param      currCol         current column in the matrix.
+ *  @param      rows            total number of rows in the matrix.
+ *  @param      cols            total number of columns in the matrix.
+ *  @param      matrix          pointer to a matrix.
+ *  @param      flagMatrix      pointer to a flagMatrix matrix.
+ *  @param      n               term position in the real Fibonacci sequence.
+ *  @return                     whether there's a path to the sequence or not.
  */
-bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **flag, int n)
+bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **flagMatrix, int n)
 {
-    if (currLine == rows - 1) { return true; }
+    if (currLine == rows - 1)
+    {
+        return true;
+    }
     else
     {
         bool found = false;
 
         if (matrix[currLine + 1][currCol] == realFibonacciSequence(n + 1) &&
-            flag[currLine + 1][currCol] == 0)
+            flagMatrix[currLine + 1][currCol] == 0)
         {
-            flag[currLine + 1][currCol] = n + 1;
-            found = move(currLine + 1, currCol, rows, cols, matrix, flag, n + 1);
+            flagMatrix[currLine + 1][currCol] = n + 1;
+            found = move(currLine + 1, currCol, rows, cols, matrix, flagMatrix, n + 1);
         }
         if (currCol > 0 && matrix[currLine][currCol - 1] == realFibonacciSequence(n + 1) &&
-            flag[currLine][currCol - 1] == 0 && !found)
+            flagMatrix[currLine][currCol - 1] == 0 && !found)
         {
-            flag[currLine][currCol - 1] = n + 1;
-            found = move(currLine, currCol - 1, rows, cols, matrix, flag, n + 1);
+            flagMatrix[currLine][currCol - 1] = n + 1;
+            found = move(currLine, currCol - 1, rows, cols, matrix, flagMatrix, n + 1);
         }
         if (currCol < cols - 1 && matrix[currLine][currCol + 1] == realFibonacciSequence(n + 1) &&
-            flag[currLine][currCol + 1] == 0 && !found)
+            flagMatrix[currLine][currCol + 1] == 0 && !found)
         {
-            flag[currLine][currCol + 1] = n + 1;
-            found = move(currLine, currCol + 1, rows, cols, matrix, flag, n + 1);
+            flagMatrix[currLine][currCol + 1] = n + 1;
+            found = move(currLine, currCol + 1, rows, cols, matrix, flagMatrix, n + 1);
         }
         if (currLine > 0 && matrix[currLine - 1][currCol] == realFibonacciSequence(n + 1) &&
-            flag[currLine - 1][currCol] == 0 && !found)
+            flagMatrix[currLine - 1][currCol] == 0 && !found)
         {
-            flag[currLine - 1][currCol] = n + 1;
-            found = move(currLine - 1, currCol, rows, cols, matrix, flag, n + 1);
+            flagMatrix[currLine - 1][currCol] = n + 1;
+            found = move(currLine - 1, currCol, rows, cols, matrix, flagMatrix, n + 1);
         }
 
         if (!found)
         {
-            flag[currLine][currCol] = 0;
+            flagMatrix[currLine][currCol] = 0;
             return false;
         }
 
         return true;
     }
+}
+
+
+/*
+ *  Discovers if there's a path, if found prints it out.
+ *
+ *  @param      matrix          pointer to a matrix.
+ *  @param      flagMatrix      pointer to a flagMatrix matrix.
+ *  @param      rows            total number of rows in the matrix.
+ *  @param      cols            total number of columns in the matrix.
+ */
+bool isThereAPath(int **matrix, int **flagMatrix, int rows, int cols)
+{
+    for (int i = 0; i < cols; i++)
+    {
+        if (matrix[0][i] == 1)
+        {
+            flagMatrix[0][i] = 1;
+            if (move(0, i, rows, cols, matrix, flagMatrix, 1))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 

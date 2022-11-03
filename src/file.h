@@ -3,8 +3,8 @@
 #endif
 
 
-int **readFileIntoMatrix(char *filename, int *rows, int *cols);
+int **readFileIntoMatrix(char *filepath, int *rows, int *cols);
 
 char *generateRandomFile(int *rows, int *cols);
 
-void flush_in();
+void flushIn();

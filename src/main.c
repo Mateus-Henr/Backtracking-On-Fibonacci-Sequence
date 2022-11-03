@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <stdbool.h>
-#include <string.h>
 
 #include "file.h"
 #include "matrix.h"
@@ -10,6 +9,7 @@
 
 
 // Function prototype.
+
 void clearConsole();
 
 
@@ -20,32 +20,31 @@ void clearConsole();
  */
 int main()
 {
-    char filename[CHAR_MAX];
-    int rows, cols, option = 0;
-
     clearConsole();
-    printf("Welcome to the route calculator!\n");
+    printf("Welcome to the path finder!\n");
 
-    do
+    while (true)
     {
-        printf("Choose an option:\n"
-               "1 - Calculate route from file.\n"
-               "2 - Generate random file and calculate route.\n"
-               "3 - Exit.\n"
-               "Option: ");
+        char userFilepath[CHAR_MAX];
+        int rows, cols, option = 0;
+        int **matrix, **flagMatrix = NULL;
 
-        option = 0;
+        printf("\nMenu\n"
+               "1 - Calculate path from file.\n"
+               "2 - Generate random file and calculate path.\n"
+               "3 - Exit.\n"
+               "Choose an option:\n");
         scanf("%d", &option);
-        flush_in();
+        flushIn();
 
         switch (option)
         {
             case 1:
-                printf("Type the filename: ");
-                scanf("%s", filename);
-                flush_in();
+                printf("Type the filepath: ");
+                scanf("%s", userFilepath);
+                flushIn();
 
-                int **matrix = readFileIntoMatrix(filename, &rows, &cols);
+                matrix = readFileIntoMatrix(userFilepath, &rows, &cols);
 
                 if (!matrix)
                 {
@@ -56,7 +55,7 @@ int main()
 
                 }
 
-                int **flagMatrix = initializeMatrix(rows, cols);
+                flagMatrix = initializeMatrix(rows, cols);
 
                 if (!flagMatrix)
                 {
@@ -66,26 +65,15 @@ int main()
                     break;
                 }
 
-                bool found = false;
+                printf("\nMatrix:\n");
+                printMatrix(matrix, rows, cols);
 
-                for (int i = 0; i < cols; i++)
+                printf("\nPress ENTER to continue...");
+                getchar();
+
+                if (isThereAPath(matrix, flagMatrix, rows, cols))
                 {
-                    if (matrix[0][i] == 1)
-                    {
-                        flagMatrix[0][i] = 1;
-
-                        if (move(0, i, rows, cols, matrix, flagMatrix, 1))
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (found)
-                {
-                    printf("\n\nPath has been found!\n"
-                           "Path: \n");
+                    printf("\n\nPath has been found!\n\nPath: \n");
                     printPath(flagMatrix, rows, cols);
 
                     printf("\n\nFlag matrix:\n\n");
@@ -101,19 +89,19 @@ int main()
                 clearConsole();
                 break;
             case 2:
-                printf(" ");
+                printf("Generating random file.");
 
                 char *filepath = generateRandomFile(&rows, &cols);
 
                 if (!filepath)
                 {
                     printf("\nERROR: Couldn't generate the random file.");
-                    continue;
+                    break;
                 }
 
-                int **randomMatrix = readFileIntoMatrix(filepath, &rows, &cols);
+                matrix = readFileIntoMatrix(filepath, &rows, &cols);
 
-                if (!randomMatrix)
+                if (!matrix)
                 {
                     printf("Press ENTER to continue.\n");
                     getchar();
@@ -121,44 +109,28 @@ int main()
                     break;
                 }
 
-                int **flagRandomMatrix = initializeMatrix(rows, cols);
+                flagMatrix = initializeMatrix(rows, cols);
 
-                if (!flagRandomMatrix)
+                if (!flagMatrix)
                 {
                     printf("Press ENTER to continue.\n");
                     getchar();
                     clearConsole();
                     break;
-                }
-
-                found = false;
-
-                for (int i = 0; i < cols; i++)
-                {
-                    if (randomMatrix[0][i] == 1)
-                    {
-                        flagRandomMatrix[0][i] = 1;
-                        if (move(0, i, rows, cols, randomMatrix, flagRandomMatrix, 1))
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
                 }
 
                 printf("\nMatrix:\n");
-                printMatrix(randomMatrix, rows, cols);
+                printMatrix(matrix, rows, cols);
 
                 printf("\nPress ENTER to continue...");
                 getchar();
 
-                if (found)
+                if (isThereAPath(matrix, flagMatrix, rows, cols))
                 {
-                    printf("\n\nPath has been found!\n");
-                    printf("\nPath: \n");
-                    printPath(flagRandomMatrix, rows, cols);
+                    printf("\n\nPath has been found!\n\nPath: \n");
+                    printPath(flagMatrix, rows, cols);
                     printf("\n\nFlag matrix:\n");
-                    printFlagMatrix(flagRandomMatrix, rows, cols);
+                    printFlagMatrix(flagMatrix, rows, cols);
                 }
                 else
                 {
@@ -170,17 +142,14 @@ int main()
                 clearConsole();
                 break;
             case 3:
-                printf("Exiting... \n");
-                printf("Bye!\n");
-                exit(0);
+                printf("Exiting... \nBye!\n");
+                return 0;
 
             default:
                 clearConsole();
                 break;
         }
-    } while (option != 3);
-
-    return 0;
+    }
 }
 
 

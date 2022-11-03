@@ -8,23 +8,23 @@
 #include "fibonacci.h"
 #include "file.h"
 
-#define FILEPATH "../tests/random-%d-%d.txt"
+#define FILEPATH "tests/random-%d-%d.txt"
 
 
 /*
  *  Reads file into matrix and returns initialized matrix.
  *
- *  @param     filename     name of the file.
+ *  @param     filepath     name of the file.
  *  @param     rows         pointer to an integer that will store the number of rows in the matrix.
  *  @param     cols         pointer to an integer that will store the number of columns in the matrix.
  */
-int **readFileIntoMatrix(char *filename, int *rows, int *cols)
+int **readFileIntoMatrix(char *filepath, int *rows, int *cols)
 {
-    FILE *file = fopen(filename, "r");
+    FILE *file = fopen(filepath, "r");
 
     if (!file)
     {
-        printf("ERROR: Couldn't open the file.\n");
+        printf("\nERROR: Couldn't open the file.\n");
         return NULL;
     }
 
@@ -32,7 +32,7 @@ int **readFileIntoMatrix(char *filename, int *rows, int *cols)
 
     if (*rows == 0 || *cols == 0)
     {
-        printf("ERROR: Invalid value of number of rows or columns.");
+        printf("\nERROR: Invalid value of number of rows or columns.");
         return NULL;
     }
 
@@ -40,7 +40,7 @@ int **readFileIntoMatrix(char *filename, int *rows, int *cols)
 
     if (!matrix)
     {
-        printf("ERROR: Couldn't allocate memory for the matrix.");
+        printf("\nERROR: Couldn't allocate memory for the matrix.");
         return NULL;
     }
 
@@ -60,19 +60,21 @@ int **readFileIntoMatrix(char *filename, int *rows, int *cols)
 
 
 /*
- * Generates a random file for testing.
- * Numbers of rows, columns and the aij element of the matrix is ​​generated randomly.
+ *  Generates a random file for testing.
+ *
+ *  @param     rows         pointer to an integer that will store the number of rows in the matrix.
+ *  @param     cols         pointer to an integer that will store the number of columns in the matrix.
+ *  @return                 the path to the file.
  */
 char *generateRandomFile(int *rows, int *cols)
 {
-    bool found = false;
     srand(time(NULL));
 
     *rows = rand() % 8 + 1;
     *cols = rand() % 25 + 1;
 
-    printf("\nNumber of rows: %d\n", *rows);
-    printf("Number of columns: %d\n", *cols);
+    printf("\nNumber of rows: %d\n"
+           "Number of columns: %d\n", *rows, *cols);
 
     char *filepath = (char *) malloc(strlen(FILEPATH) + 1);
 
@@ -83,7 +85,7 @@ char *generateRandomFile(int *rows, int *cols)
 
     if (!file)
     {
-        printf("ERROR: Couldn't open the file.\n");
+        printf("\nERROR: Couldn't open the file.\n");
         return NULL;
     }
 
@@ -125,10 +127,11 @@ char *generateRandomFile(int *rows, int *cols)
     return filepath;
 }
 
+
 /*
  *  Clears the input buffer.
  */
-void flush_in()
+void flushIn()
 {
     int ch;
 

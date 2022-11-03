@@ -2,6 +2,7 @@
 
 #include "fibonacci.h"
 
+
 /*
  *  Calculates the nth term of the Fibonacci sequence using a closed form.
  *
@@ -23,6 +24,7 @@ int triangular(int n)
 {
     return (n * (n + 1)) / 2;
 }
+
 
 /*
  *  Calculates the nth term of the real Fibonacci sequence using a closed form.

@@ -6,7 +6,9 @@
 
 int **initializeMatrix(int rows, int cols);
 
-bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **flag, int n);
+bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **flagMatrix, int n);
+
+bool isThereAPath(int **matrix, int **flagMatrix, int rows, int cols);
 
 void printFlagMatrix(int **matrix, int rows, int cols);
 
