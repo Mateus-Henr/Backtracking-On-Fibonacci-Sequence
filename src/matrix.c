@@ -33,7 +33,15 @@ int **initializeMatrix(int rows, int cols)
 
 
 /*
- *  Searches for sequence.
+ *  Moves through matrix looking for a path that follows the real Fibonacci sequence.
+ *
+ *  @param      currLine      current line in the matrix.
+ *  @param      currCol       current column in the matrix.
+ *  @param      rows          total number of rows in the matrix.
+ *  @param      cols          total number of columns in the matrix.
+ *  @param      matrix        pointer to a matrix.
+ *  @param      flag          pointer to a flag matrix.
+ *  @param      matrix        term position in the real Fibonacci sequence.
  */
 bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **flag, int n)
 {
@@ -90,9 +98,9 @@ void printFlagMatrix(int **matrix, int rows, int cols)
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
-        {   
+        {
             if (matrix[i][j] == 0)
-            {   
+            {
                 printf("\033[1;31m");
                 printf("%02d  ", matrix[i][j]);
                 printf("\033[0m");
@@ -109,6 +117,7 @@ void printFlagMatrix(int **matrix, int rows, int cols)
     }
 }
 
+
 /*
  *  Prints matrix out.
  *   
@@ -121,13 +130,14 @@ void printMatrix(int **matrix, int rows, int cols)
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
-        {   
+        {
             printf("%02d  ", matrix[i][j]);
         }
 
         printf("\n");
     }
 }
+
 
 /*
  *  Prints path.
@@ -144,13 +154,14 @@ void printPath(int **flagMatrix, int rows, int cols)
         y = i;
         if (flagMatrix[x][i] == 1)
         {
-            printf("[%d %d] \n", x+1, y+1);
+            printf("[%d %d] \n", x + 1, y + 1);
             path++;
             break;
         }
     }
-                
-    do{
+
+    do
+    {
         if (x < rows - 1 && flagMatrix[x + 1][y] == path + 1)
         {
             printf("[%d %d]\n", x + 1 + 1, y + 1);
@@ -175,7 +186,5 @@ void printPath(int **flagMatrix, int rows, int cols)
             x--;
             path++;
         }
-    }while (x != rows - 1); 
+    } while (x != rows - 1);
 }
-
-

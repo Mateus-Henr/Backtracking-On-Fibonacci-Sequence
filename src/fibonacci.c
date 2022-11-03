@@ -14,6 +14,11 @@ int getNthTermFromFibonacci(int n)
 }
 
 
+/*
+ *  Helper function for to find the real Fibonacci sequence.
+ *
+ *  @param      n      value for n.
+ */
 int triangular(int n)
 {
     return (n * (n + 1)) / 2;

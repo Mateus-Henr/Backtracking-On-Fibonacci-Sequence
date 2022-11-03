@@ -4,5 +4,7 @@
 
 
 int **readFileIntoMatrix(char *filename, int *rows, int *cols);
-int generateFile();
+
+char *generateRandomFile(int *rows, int *cols);
+
 void flush_in();

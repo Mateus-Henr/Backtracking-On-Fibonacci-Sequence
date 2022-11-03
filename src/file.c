@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <limits.h>
 #include <time.h>
 #include <string.h>
 
@@ -9,8 +8,7 @@
 #include "fibonacci.h"
 #include "file.h"
 
-
-
+#define FILEPATH "../tests/random-%d-%d.txt"
 
 
 /*
@@ -60,108 +58,82 @@ int **readFileIntoMatrix(char *filename, int *rows, int *cols)
     return matrix;
 }
 
+
 /*
- * Generate a random File for testing.
+ * Generates a random file for testing.
  * Numbers of rows, columns and the aij element of the matrix is ​​generated randomly.
  */
-
-int generateFile()
+char *generateRandomFile(int *rows, int *cols)
 {
     bool found = false;
     srand(time(NULL));
 
-    int rows = rand() % 8 + 1;
-    int cols = rand() % 25 + 1;
+    *rows = rand() % 8 + 1;
+    *cols = rand() % 25 + 1;
 
-    printf("\nNumber of rows: %d\n", rows);
-    printf("Number of columns: %d\n", cols);
+    printf("\nNumber of rows: %d\n", *rows);
+    printf("Number of columns: %d\n", *cols);
 
-    char filename[CHAR_MAX];
-    char folder[CHAR_MAX] = "tests/";
-    
-    sprintf(filename, "random-%d-%d.txt", rows, cols);
+    char *filepath = (char *) malloc(strlen(FILEPATH) + 1);
 
-    printf("Filename: %s\n", filename);
+    sprintf(filepath, FILEPATH, *rows, *cols);
+    printf("Filepath: %s\n", filepath);
 
-    strcat(folder, filename);
+    FILE *file = fopen(filepath, "w");
 
-    FILE *file = fopen(folder, "w");
+    if (!file)
+    {
+        printf("ERROR: Couldn't open the file.\n");
+        return NULL;
+    }
 
-    fprintf(file, "%d %d \n", rows, cols);
+    fprintf(file, "%d %d \n", *rows, *cols);
 
-    for(int i = 0; i < rows; i++){
-        for(int j = 0; j < cols; j++){
+    for (int i = 0; i < *rows; i++)
+    {
+        for (int j = 0; j < *cols; j++)
+        {
             int probability = rand() % 100 + 1;
 
-            if(probability <= 30){
+            if (probability <= 30)
+            {
                 fprintf(file, "%d ", getNthTermFromFibonacci(rand() % 2 + 1));
             }
 
-            else if (probability <= 50){
+            else if (probability <= 50)
+            {
                 fprintf(file, "%d ", getNthTermFromFibonacci(rand() % 5 + 1));
             }
 
-            else if (probability <= 70){
-                fprintf(file, "%d ", getNthTermFromFibonacci( rand () % 6 + 1));
+            else if (probability <= 70)
+            {
+                fprintf(file, "%d ", getNthTermFromFibonacci(rand() % 6 + 1));
             }
 
-            else{
-                fprintf(file, "%d ", getNthTermFromFibonacci(rand () % 8 + 1));
+            else
+            {
+                fprintf(file, "%d ", getNthTermFromFibonacci(rand() % 8 + 1));
             }
-
         }
+
         fprintf(file, "\n");
     }
+
     fclose(file);
+    file = NULL;
 
-    int **matrix = readFileIntoMatrix( folder, &rows, &cols);
-
-    if (!matrix) return -1;
-    
-
-    int **flagMatrix = initializeMatrix(rows, cols);
-
-    if (!flagMatrix) return -1;
-
-    for (int i = 0; i < cols; i++)
-    {
-        if (matrix[0][i] == 1)
-        {
-            flagMatrix[0][i] = 1;
-            if (move(0, i, rows, cols, matrix, flagMatrix, 1))
-            {
-                found = true;
-                break;
-            }
-        }
-    }
-            
-    printf("\nMatrix:\n");
-    printMatrix(matrix, rows, cols);
-    printf("\nPress ENTER to continue..."); getchar();
-            
-    if (found)
-        {
-        printf("\n\nPath has been found!\n");
-        printf("Path: \n");
-        printPath(flagMatrix, rows, cols);   
-        printf("\n\nFlag matrix:\n");
-        printFlagMatrix(flagMatrix, rows, cols);
-    }
-    else
-    {
-        printf("\n\nImpossible to find a path!\n\n");
-    }
-    return 0;
+    return filepath;
 }
 
 /*
- * Clears the input buffer
+ *  Clears the input buffer.
  */
-
-void flush_in() { 
+void flush_in()
+{
     int ch;
-    do {
+
+    do
+    {
         ch = fgetc(stdin);
     } while (ch != EOF && ch != '\n');
 }
