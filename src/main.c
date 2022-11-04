@@ -7,6 +7,8 @@
 #include "matrix.h"
 #include "fibonacci.h"
 
+#define INC(x) CAT(INC_, x)
+
 
 // Function prototype.
 
@@ -26,8 +28,8 @@ int main()
     while (true)
     {
         char userFilepath[CHAR_MAX];
-        int rows, cols, option = 0;
-        int **matrix, **flagMatrix = NULL;
+        int rows = 0, cols = 0, option = 0, maxRec = 0, totalRec = 0;
+        int **matrix = NULL, **flagMatrix = NULL;
 
         printf("\nMenu\n"
                "1 - Calculate path from file.\n"
@@ -52,7 +54,6 @@ int main()
                     getchar();
                     clearConsole();
                     break;
-
                 }
 
                 flagMatrix = initializeMatrix(rows, cols);
@@ -71,7 +72,7 @@ int main()
                 printf("\nPress ENTER to continue...");
                 getchar();
 
-                if (isThereAPath(matrix, flagMatrix, rows, cols))
+                if (isThereAPath(matrix, flagMatrix, rows, cols, &totalRec, &maxRec))
                 {
                     printf("\n\nPath has been found!\n\nPath: \n");
                     printPath(flagMatrix, rows, cols);
@@ -84,6 +85,7 @@ int main()
                     printf("\n\nImpossible to find a path!");
                 }
 
+                printf("\nTotal recursions: %d\nMax recursion: %d\n", totalRec, maxRec);
                 printf("\n\nPress ENTER to continue...");
                 getchar();
                 clearConsole();
@@ -125,7 +127,7 @@ int main()
                 printf("\nPress ENTER to continue...");
                 getchar();
 
-                if (isThereAPath(matrix, flagMatrix, rows, cols))
+                if (isThereAPath(matrix, flagMatrix, rows, cols, &totalRec, &maxRec))
                 {
                     printf("\n\nPath has been found!\n\nPath: \n");
                     printPath(flagMatrix, rows, cols);
@@ -137,6 +139,7 @@ int main()
                     printf("\n\nImpossible to find a path!\n\n");
                 }
 
+                printf("\nTotal recursions: %d\nMax recursion: %d\n", totalRec, maxRec);
                 printf("\nPress ENTER to continue...");
                 getchar();
                 clearConsole();
