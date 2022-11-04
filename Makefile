@@ -1,5 +1,5 @@
 all:
-	gcc src/main.c -o main -lm
+	gcc -o main src/fibonacci.c src/file.c src/matrix.c src/main.c -lm
 	./main
 
 clean:
