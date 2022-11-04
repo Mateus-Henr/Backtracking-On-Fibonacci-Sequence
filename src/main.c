@@ -28,7 +28,7 @@ int main()
     while (true)
     {
         char userFilepath[CHAR_MAX];
-        int rows = 0, cols = 0, option = 0, maxRec = 0, totalRec = 0;
+        int rows = 0, cols = 0, option = 0, maxRec = 0, totalRec = 0, choice = 0;
         int **matrix = NULL, **flagMatrix = NULL;
 
         printf("\nMenu\n"
@@ -85,6 +85,17 @@ int main()
                     printf("\n\nImpossible to find a path!");
                 }
 
+                printf("\n\nWould you like to know the recursion analysis?\n"
+                       "1 - Yes\n"
+                       "Any other key - No\n");
+                scanf("%d", &choice);
+                flushIn();
+
+                if (choice == 1)
+                {
+                    printf("\nTotal recursions: %d\nMax recursion: %d\n", totalRec, maxRec);
+                }
+
                 printf("\nTotal recursions: %d\nMax recursion: %d\n", totalRec, maxRec);
                 printf("\n\nPress ENTER to continue...");
                 getchar();
@@ -139,7 +150,17 @@ int main()
                     printf("\n\nImpossible to find a path!\n\n");
                 }
 
-                printf("\nTotal recursions: %d\nMax recursion: %d\n", totalRec, maxRec);
+                printf("\n\nWould you like to know the recursion analysis?\n"
+                       "1 - Yes\n"
+                       "Any other key - No\n");
+                scanf("%d", &choice);
+                flushIn();
+
+                if (choice == 1)
+                {
+                    printf("\nTotal recursions: %d\nMax recursion: %d\n", totalRec, maxRec);
+                }
+
                 printf("\nPress ENTER to continue...");
                 getchar();
                 clearConsole();
