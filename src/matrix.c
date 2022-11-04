@@ -42,8 +42,10 @@ int **initializeMatrix(int rows, int cols)
  *  @param      matrix          pointer to a matrix.
  *  @param      flagMatrix      pointer to a flagMatrix matrix.
  *  @param      n               term position in the real Fibonacci sequence.
+ *  @param      currRec         current recursion level.
  *  @return                     whether there's a path to the sequence or not.
  */
+
 bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **flagMatrix, int n, int *currRec)
 {
     (*currRec)++;
@@ -99,6 +101,8 @@ bool move(int currLine, int currCol, int rows, int cols, int **matrix, int **fla
  *  @param      flagMatrix      pointer to a flagMatrix matrix.
  *  @param      rows            total number of rows in the matrix.
  *  @param      cols            total number of columns in the matrix.
+ *  @param      totalRec        total number of recursions.
+ *  @param      maxRec          maximum number of recursions.
  *  @return                     whether a path could be found or not.
  */
 bool isThereAPath(int **matrix, int **flagMatrix, int rows, int cols, int *totalRec, int *maxRec)

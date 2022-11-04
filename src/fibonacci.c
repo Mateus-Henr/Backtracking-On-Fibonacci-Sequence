@@ -19,7 +19,9 @@ int getNthTermFromFibonacci(int n)
  *  Helper function for to find the real Fibonacci sequence.
  *
  *  @param      n      value for n.
+ *  @return            operation result value.
  */
+
 int triangular(int n)
 {
     return (n * (n + 1)) / 2;
@@ -30,7 +32,9 @@ int triangular(int n)
  *  Calculates the nth term of the real Fibonacci sequence using a closed form.
  *
  *  @param      n      term on the ntg position.
+ *  @return            term on the nth position.
  */
+ 
 int realFibonacciSequence(int n)
 {
     int k = 0;

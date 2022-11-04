@@ -17,7 +17,9 @@
  *  @param     filepath     name of the file.
  *  @param     rows         pointer to an integer that will store the number of rows in the matrix.
  *  @param     cols         pointer to an integer that will store the number of columns in the matrix.
+ *  @return                 pointer to initialized matrix.
  */
+  
 int **readFileIntoMatrix(char *filepath, int *rows, int *cols)
 {
     FILE *file = fopen(filepath, "r");
@@ -72,6 +74,7 @@ char *generateRandomFile(int *rows, int *cols)
 
     *rows = rand() % 8 + 1;
     *cols = rand() % 25 + 1;
+   
 
     printf("\nNumber of rows: %d\n"
            "Number of columns: %d\n", *rows, *cols);

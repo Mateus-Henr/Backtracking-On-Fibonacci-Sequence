@@ -96,7 +96,7 @@ int main()
                     printf("\nTotal recursions: %d\nMax recursion: %d\n", totalRec, maxRec);
                 }
 
-                printf("\nTotal recursions: %d\nMax recursion: %d\n", totalRec, maxRec);
+                
                 printf("\n\nPress ENTER to continue...");
                 getchar();
                 clearConsole();
